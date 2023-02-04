@@ -13,14 +13,13 @@ function PokemonPage() {
     type: "",
   });
   const params = useParams();
-  console.log(params); // pikachu
+
   useEffect(() => {
     async function getData() {
       try {
         const response = await axios.get(
           `https://pokeapi.co/api/v2/pokemon/${params.pokemonName}`
         );
-        console.log(response);
         setPokemonData({
           name: params.pokemonName,
           species: response.data.species.name,
@@ -32,9 +31,7 @@ function PokemonPage() {
           isWaterType:
             response.data.types[0].type.name === "water" ? true : false,
         });
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
     getData();
   }, []);
