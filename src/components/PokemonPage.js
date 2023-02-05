@@ -23,7 +23,7 @@ function PokemonPage() {
         setPokemonData({
           name: params.pokemonName,
           species: response.data.species.name,
-          img: response.data.sprites.front_default,
+          img: response.data.sprites.front_shiny,
           hp: response.data.stats[0].base_stat,
           attack: response.data.stats[1].base_stat,
           defense: response.data.stats[2].base_stat,
@@ -34,6 +34,7 @@ function PokemonPage() {
       } catch (err) {}
     }
     getData();
+    console.log(setPokemonData);
   }, []);
   return (
     <div>

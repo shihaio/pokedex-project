@@ -5,51 +5,52 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import PokemonModal from "./PokemonModal";
+import PokemonPage from "./PokemonPage";
 
 function Home() {
-  const [pokemonList, setPokemonList] = useState([]);
+  const [pokemonDataList, setPokemonDataList] = useState([]);
   useEffect(() => {
-    async function getData() {
+    async function getPokemonDataList() {
       try {
         const response = await axios.get("https://pokeapi.co/api/v2/pokemon");
-        setPokemonList(response.data.results);
-      } catch (err) {
-        console.log(err);
+        const pokemonNameList = response.data.results;
+        const extractedPokemonDataList = [];
+
+        for await (let element of pokemonNameList) {
+          const scanPokemonDataList = await axios.get(element.url);
+          extractedPokemonDataList.push(scanPokemonDataList.data);
+        }
+        setPokemonDataList(extractedPokemonDataList);
+      } catch (error) {
+        pokemonDataList({ type: "FETCH_FAILURE" });
       }
     }
-
-    getData();
+    getPokemonDataList();
   }, []);
 
-  let pokemonListToShow = [];
-  pokemonListToShow = pokemonList.map((element, index) => {
+  console.log(pokemonDataList);
+
+  let pokemonListHomePage = [];
+  pokemonListHomePage = pokemonDataList.map((element, index) => {
     return (
-      <Card style={{ width: "18rem" }} key={index}>
-        <Card.Body>
-          <Card.Title>Pokémon</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            Card Subtitle
-          </Card.Subtitle>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          <Card.Link href={`/pokemon/${element.name}`}>
-            {element.name}
-          </Card.Link>
-          <Card.Link href={`/pokemon/${element.index}`}>
-            {element.index}
-          </Card.Link>
-        </Card.Body>
-      </Card>
+      <Col>
+        <PokemonModal
+          key={index}
+          imgUrl={element.sprites.front_default}
+          name={element.name}
+          types={element.types}
+        />
+      </Col>
     );
   });
 
   return (
     <Container>
-      <Row>
-        <Col sm={4}>{pokemonListToShow}</Col>
-      </Row>
+      <div>{pokemonListHomePage}</div>
+      {/* <Col>haha</Col>
+      <Col>haha</Col>
+      <Col>haha</Col> */}
     </Container>
   );
 }
