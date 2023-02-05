@@ -34,12 +34,16 @@ function Home() {
   let pokemonListHomePage = [];
   pokemonListHomePage = pokemonDataList.map((element, index) => {
     return (
-      <Col>
+      <Col md={4} xs={12} className="py-2">
         <PokemonModal
           key={index}
+          id={element.id}
           imgUrl={element.sprites.front_default}
           name={element.name}
           types={element.types}
+          height={element.height}
+          weight={element.weight}
+          abilities={element.abilities}
         />
       </Col>
     );
@@ -47,7 +51,7 @@ function Home() {
 
   return (
     <Container>
-      <div>{pokemonListHomePage}</div>
+      <Row>{pokemonListHomePage}</Row>
       {/* <Col>haha</Col>
       <Col>haha</Col>
       <Col>haha</Col> */}
