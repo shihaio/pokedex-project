@@ -7,9 +7,17 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import PokemonModal from "./PokemonModal";
 import PokemonPage from "./PokemonPage";
+import Button from "react-bootstrap/Button";
 
 function Home() {
   const [pokemonDataList, setPokemonDataList] = useState([]);
+  const [addLikedPokemon, setAddLikedPokemon] = useState([]);
+  const [removeLikedPokemon, setRemoveLikedPokemon] = useState([]);
+
+  const addLikeHandler = (teddy) => {
+    console.log("teddy is: ", teddy);
+  };
+  const removeLikeHandler = (handleLike) => {};
   useEffect(() => {
     async function getPokemonDataList() {
       try {
@@ -29,8 +37,6 @@ function Home() {
     getPokemonDataList();
   }, []);
 
-  console.log(pokemonDataList);
-
   let pokemonListHomePage = [];
   pokemonListHomePage = pokemonDataList.map((element, index) => {
     return (
@@ -44,6 +50,8 @@ function Home() {
           height={element.height}
           weight={element.weight}
           abilities={element.abilities}
+          addLike={addLikedPokemon}
+          removeLike={removeLikedPokemon}
         />
       </Col>
     );
@@ -52,6 +60,14 @@ function Home() {
   return (
     <Container>
       <Row>{pokemonListHomePage}</Row>
+      <Button
+        onClick={() => {
+          localStorage.setItem("myCat", "Tom");
+        }}
+      >
+        Set
+      </Button>
+      {localStorage.getItem("myCat")}
       {/* <Col>haha</Col>
       <Col>haha</Col>
       <Col>haha</Col> */}

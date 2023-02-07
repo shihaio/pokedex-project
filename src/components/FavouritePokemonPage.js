@@ -1,7 +1,7 @@
 import React from "react";
 
 function FavouritePokemonPage() {
-  return <div>Favourite Pokemon</div>;
+  return <div>{JSON.parse(localStorage.getItem("pokemonFavListX"))}</div>;
 }
 
 export default FavouritePokemonPage;

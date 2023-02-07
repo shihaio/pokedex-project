@@ -12,23 +12,31 @@ import Col from "react-bootstrap/Col";
 function PokemonModal(props) {
   // console.log(props);
   const [show, setShow] = useState(false);
-
+  const [isLike, setIsLike] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const handleLike = () => setShow(false);
+  const handleLike = (event) => {
+    setIsLike(!isLike);
+    // when I click the like buttton, add pokemon into list of page (Favourite pokemon page)
+    const pokemonFavourList = localStorage.getItem("pokemonFavListX");
+    console.log(pokemonFavourList);
+    // console.log("pokemonFavourList is: ", typeof JSON.parse(pokemonFavourList));
+    let pokemonFavList;
+    if (pokemonFavourList === null) {
+      pokemonFavList = [];
+    } else {
+      pokemonFavList = JSON.parse(pokemonFavourList);
+    }
+
+    pokemonFavList.push(props.name);
+    localStorage.setItem("pokemonFavListX", JSON.stringify(pokemonFavList));
+
+    isLike ? props.addLike(props.name) : props.removeLike(props.name);
+  };
+  console.log(isLike);
 
   return (
     <>
-      {/* <Button variant="primary" onClick={handleShow}>
-        {props.name}
-        {props.types.length ? (
-          props.types.map((item) => {
-            return <Modal.Body>{item.type.name}</Modal.Body>;
-          })
-        ) : (
-          <Modal.Body>No Type!</Modal.Body>
-        )}
-      </Button> */}
       <Card className="bg-dark text-white" onClick={handleShow} border="light">
         <Card.Img src={props.imgUrl} alt="Card image" />
         <Card.ImgOverlay>
@@ -82,13 +90,13 @@ function PokemonModal(props) {
             <Row xs={2} md={4} lg={6}>
               <Col>Abilities</Col>
               <Col>
-                {/* {props.abilites.lenght ? (
-                  props.abilites.map((item) => {
+                {props.abilities.length ? (
+                  props.abilities.map((item) => {
                     return <Col>{item.ability.name}</Col>;
                   })
                 ) : (
                   <Col>No Ability!</Col>
-                )} */}
+                )}
               </Col>
             </Row>
           </Container>
@@ -99,7 +107,7 @@ function PokemonModal(props) {
             Close
           </Button>
           <Button variant="primary" onClick={handleLike}>
-            Like!
+            {isLike ? "unlike" : "Like"}
           </Button>
         </Modal.Footer>
       </Modal>
