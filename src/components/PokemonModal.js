@@ -15,6 +15,10 @@ function PokemonModal(props) {
   const [isLike, setIsLike] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  // const addLike = (name) => {
+  //   pokemonFavList.push(name);
+  // };
+  // const removeLike = (name) => {};
   const handleLike = (event) => {
     setIsLike(!isLike);
     // when I click the like buttton, add pokemon into list of page (Favourite pokemon page)
@@ -29,11 +33,11 @@ function PokemonModal(props) {
     }
 
     pokemonFavList.push(props.name);
+
     localStorage.setItem("pokemonFavListX", JSON.stringify(pokemonFavList));
 
-    isLike ? props.addLike(props.name) : props.removeLike(props.name);
+    // isLike ? addLike(props.name) : removeLike(props.name);
   };
-  console.log(isLike);
 
   return (
     <>
@@ -42,8 +46,8 @@ function PokemonModal(props) {
         <Card.ImgOverlay>
           <Card.Title>{props.name}</Card.Title>
           {props.types.length ? (
-            props.types.map((item) => {
-              return <Modal.Body>{item.type.name}</Modal.Body>;
+            props.types.map((item, index) => {
+              return <Modal.Body key={index}>{item.type.name}</Modal.Body>;
             })
           ) : (
             <Modal.Body>No Type!</Modal.Body>
@@ -71,8 +75,8 @@ function PokemonModal(props) {
               <Col>Species</Col>
               <Col>
                 {props.types.length ? (
-                  props.types.map((item) => {
-                    return <Col>{item.type.name}</Col>;
+                  props.types.map((item, index) => {
+                    return <Col key={index}>{item.type.name}</Col>;
                   })
                 ) : (
                   <Col>No Type!</Col>
@@ -91,8 +95,8 @@ function PokemonModal(props) {
               <Col>Abilities</Col>
               <Col>
                 {props.abilities.length ? (
-                  props.abilities.map((item) => {
-                    return <Col>{item.ability.name}</Col>;
+                  props.abilities.map((item, index) => {
+                    return <Col key={index}>{item.ability.name}</Col>;
                   })
                 ) : (
                   <Col>No Ability!</Col>
@@ -103,9 +107,6 @@ function PokemonModal(props) {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
           <Button variant="primary" onClick={handleLike}>
             {isLike ? "unlike" : "Like"}
           </Button>

@@ -11,47 +11,41 @@ import Button from "react-bootstrap/Button";
 
 function Home() {
   const [pokemonDataList, setPokemonDataList] = useState([]);
-  const [addLikedPokemon, setAddLikedPokemon] = useState([]);
-  const [removeLikedPokemon, setRemoveLikedPokemon] = useState([]);
 
-  const addLikeHandler = (teddy) => {
-    console.log("teddy is: ", teddy);
-  };
-  const removeLikeHandler = (handleLike) => {};
   useEffect(() => {
     async function getPokemonDataList() {
       try {
-        const response = await axios.get("https://pokeapi.co/api/v2/pokemon");
-        const pokemonNameList = response.data.results;
-        const extractedPokemonDataList = [];
+        // "await" keyword on returned promises.
+        const response = await axios.get("https://pokeapi.co/api/v2/pokemon"); // response is a variable - it stores package we receieved from remote API.
+        const pokemonNameList = response.data.results; // response is the package we received from remote API! 
+        const extractedPokemonDataList = []; // this is an empty array to store iterated elements into it!
 
         for await (let element of pokemonNameList) {
-          const scanPokemonDataList = await axios.get(element.url);
+          // axios takes the URL as an argument and returns a promise.
+          // you don't have to transform the returned response to JSON anymore.
+          const scanPokemonDataList = await axios.get(element.url); // element = data object
           extractedPokemonDataList.push(scanPokemonDataList.data);
         }
-        setPokemonDataList(extractedPokemonDataList);
+        setPokemonDataList(extractedPokemonDataList); // we set the state as extractedPokemonDataList, this is a client-side search package.
       } catch (error) {
         pokemonDataList({ type: "FETCH_FAILURE" });
       }
     }
-    getPokemonDataList();
+    getPokemonDataList(); // this function is rendered and current state is with extractedPokemonDataList!
   }, []);
 
   let pokemonListHomePage = [];
   pokemonListHomePage = pokemonDataList.map((element, index) => {
     return (
-      <Col md={4} xs={12} className="py-2">
+      <Col md={4} xs={12} className="py-2" key={index}>
         <PokemonModal
-          key={index}
           id={element.id}
           imgUrl={element.sprites.front_default}
           name={element.name}
           types={element.types}
           height={element.height}
           weight={element.weight}
-          abilities={element.abilities}
-          addLike={addLikedPokemon}
-          removeLike={removeLikedPokemon}
+          abilities={element.abilities}     
         />
       </Col>
     );
@@ -68,9 +62,6 @@ function Home() {
         Set
       </Button>
       {localStorage.getItem("myCat")}
-      {/* <Col>haha</Col>
-      <Col>haha</Col>
-      <Col>haha</Col> */}
     </Container>
   );
 }
