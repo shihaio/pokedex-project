@@ -17,18 +17,20 @@ function Home() {
       try {
         // "await" keyword on returned promises.
         const response = await axios.get("https://pokeapi.co/api/v2/pokemon"); // response is a variable - it stores package we receieved from remote API.
-        const pokemonNameList = response.data.results; // response is the package we received from remote API! 
+        const pokemonNameList = response.data.results; // response is the package we received from remote API!
         const extractedPokemonDataList = []; // this is an empty array to store iterated elements into it!
 
         for await (let element of pokemonNameList) {
           // axios takes the URL as an argument and returns a promise.
           // you don't have to transform the returned response to JSON anymore.
-          const scanPokemonDataList = await axios.get(element.url); // element = data object
+          const scanPokemonDataList = await axios.get(
+            `https://pokeapi.co/api/v2/pokemon/${element.name}`
+          ); // element = data object
           extractedPokemonDataList.push(scanPokemonDataList.data);
         }
         setPokemonDataList(extractedPokemonDataList); // we set the state as extractedPokemonDataList, this is a client-side search package.
       } catch (error) {
-        pokemonDataList({ type: "FETCH_FAILURE" });
+        console.log("Fetch Failure");
       }
     }
     getPokemonDataList(); // this function is rendered and current state is with extractedPokemonDataList!
@@ -45,7 +47,7 @@ function Home() {
           types={element.types}
           height={element.height}
           weight={element.weight}
-          abilities={element.abilities}     
+          abilities={element.abilities}
         />
       </Col>
     );
@@ -54,14 +56,14 @@ function Home() {
   return (
     <Container>
       <Row>{pokemonListHomePage}</Row>
-      <Button
+      {/* <Button
         onClick={() => {
           localStorage.setItem("myCat", "Tom");
         }}
       >
         Set
-      </Button>
-      {localStorage.getItem("myCat")}
+      </Button> */}
+      {/* {localStorage.getItem("myCat")} */}
     </Container>
   );
 }

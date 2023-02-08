@@ -12,31 +12,31 @@ import Col from "react-bootstrap/Col";
 function PokemonModal(props) {
   // console.log(props);
   const [show, setShow] = useState(false);
-  const [isLike, setIsLike] = useState(false);
+  const [buttonName, setButtonName] = useState("Like");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   // const addLike = (name) => {
-  //   pokemonFavList.push(name);
+  //   updatedNameList.push(name);
   // };
   // const removeLike = (name) => {};
   const handleLike = (event) => {
-    setIsLike(!isLike);
+    setButtonName("Unlike");
     // when I click the like buttton, add pokemon into list of page (Favourite pokemon page)
-    const pokemonFavourList = localStorage.getItem("pokemonFavListX");
-    console.log(pokemonFavourList);
-    // console.log("pokemonFavourList is: ", typeof JSON.parse(pokemonFavourList));
-    let pokemonFavList;
-    if (pokemonFavourList === null) {
-      pokemonFavList = [];
+    const nameListLocal = localStorage.getItem("pokemonNameList"); // Json format , is string format "{pokemonNameList: ["pikachu","ivy"]}"
+    console.log(nameListLocal);
+    // console.log("nameListLocal is: ", typeof JSON.parse(nameListLocal));
+    let updatedNameList;
+    if (nameListLocal === null) {
+      updatedNameList = [];
     } else {
-      pokemonFavList = JSON.parse(pokemonFavourList);
+      updatedNameList = JSON.parse(nameListLocal); // javascript object {pokemonNameList: ["pikachu","ivy"]}
     }
 
-    pokemonFavList.push(props.name);
+    updatedNameList.push(props.name);
 
-    localStorage.setItem("pokemonFavListX", JSON.stringify(pokemonFavList));
+    localStorage.setItem("pokemonNameList", JSON.stringify(updatedNameList));
 
-    // isLike ? addLike(props.name) : removeLike(props.name);
+    // Like ? addLike(props.name) : removeLike(props.name);
   };
 
   return (
@@ -108,7 +108,7 @@ function PokemonModal(props) {
 
         <Modal.Footer>
           <Button variant="primary" onClick={handleLike}>
-            {isLike ? "unlike" : "Like"}
+            {buttonName}
           </Button>
         </Modal.Footer>
       </Modal>

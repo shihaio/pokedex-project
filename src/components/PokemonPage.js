@@ -31,7 +31,9 @@ function PokemonPage() {
           isWaterType:
             response.data.types[0].type.name === "water" ? true : false,
         });
-      } catch (err) {}
+      } catch (error) {
+        console.log("Fetch Failure.");
+      }
     }
     getData();
     console.log(setPokemonData);
