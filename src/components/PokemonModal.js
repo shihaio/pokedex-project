@@ -12,7 +12,7 @@ import Col from "react-bootstrap/Col";
 function PokemonModal(props) {
   // console.log(props);
   const [show, setShow] = useState(false);
-  const [buttonName, setButtonName] = useState("Like");
+  const [buttonName, setButtonName] = useState(props.buttonName);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 

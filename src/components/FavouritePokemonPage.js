@@ -45,6 +45,7 @@ function FavouritePokemonPage() {
           height={element.height}
           weight={element.weight}
           abilities={element.abilities}
+          buttonName={"Unlike"}
         />
       </Col>
     );

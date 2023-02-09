@@ -48,6 +48,7 @@ function Home() {
           height={element.height}
           weight={element.weight}
           abilities={element.abilities}
+          buttonName={"Like"}
         />
       </Col>
     );
