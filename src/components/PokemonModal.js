@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
@@ -15,15 +15,13 @@ function PokemonModal(props) {
   const [buttonName, setButtonName] = useState("Like");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  // const addLike = (name) => {
-  //   updatedNameList.push(name);
-  // };
-  // const removeLike = (name) => {};
+
   const handleLike = (event) => {
-    setButtonName("Unlike");
-    // when I click the like buttton, add pokemon into list of page (Favourite pokemon page)
+    if (buttonName === "Like") {
+      setButtonName("Unlike");
+    } else setButtonName("Like");
+    // get data from Local Storage:
     const nameListLocal = localStorage.getItem("pokemonNameList"); // Json format , is string format "{pokemonNameList: ["pikachu","ivy"]}"
-    console.log(nameListLocal);
     // console.log("nameListLocal is: ", typeof JSON.parse(nameListLocal));
     let updatedNameList;
     if (nameListLocal === null) {
@@ -31,13 +29,32 @@ function PokemonModal(props) {
     } else {
       updatedNameList = JSON.parse(nameListLocal); // javascript object {pokemonNameList: ["pikachu","ivy"]}
     }
-
-    updatedNameList.push(props.name);
-
+    if (buttonName === "Like") {
+      updatedNameList.push(props.name);
+    } else {
+      const imdexOfName = updatedNameList.indexOf(props.name);
+      updatedNameList.splice(imdexOfName, 1);
+    }
+    console.log(updatedNameList);
     localStorage.setItem("pokemonNameList", JSON.stringify(updatedNameList));
-
-    // Like ? addLike(props.name) : removeLike(props.name);
   };
+
+  useEffect(() => {
+    // get data from Local Storage:
+    const nameListLocal = localStorage.getItem("pokemonNameList"); // Json format , is string format "{pokemonNameList: ["pikachu","ivy"]}"
+    // console.log("nameListLocal is: ", typeof JSON.parse(nameListLocal));
+    let updatedNameList;
+    if (nameListLocal === null) {
+      updatedNameList = [];
+    } else {
+      updatedNameList = JSON.parse(nameListLocal); // javascript object {pokemonNameList: ["pikachu","ivy"]}
+    }
+    if (updatedNameList.includes(props.name)) {
+      setButtonName("Unlike");
+    } else {
+      setButtonName("Like");
+    }
+  }, [buttonName]);
 
   return (
     <>
@@ -55,6 +72,9 @@ function PokemonModal(props) {
           <Card.Text>id:#{props.id}</Card.Text>
         </Card.ImgOverlay>
       </Card>
+      <Button variant="primary" onClick={handleLike} className="w-100">
+        {buttonName}
+      </Button>
 
       <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
