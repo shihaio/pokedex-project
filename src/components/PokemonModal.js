@@ -17,9 +17,11 @@ function PokemonModal(props) {
   const handleShow = () => setShow(true);
 
   const handleLike = (event) => {
+    // define the button value
     if (buttonName === "Like") {
       setButtonName("Unlike");
     } else setButtonName("Like");
+
     // get data from Local Storage:
     const nameListLocal = localStorage.getItem("pokemonNameList"); // Json format , is string format "{pokemonNameList: ["pikachu","ivy"]}"
     // console.log("nameListLocal is: ", typeof JSON.parse(nameListLocal));
@@ -36,25 +38,9 @@ function PokemonModal(props) {
       updatedNameList.splice(imdexOfName, 1);
     }
     console.log(updatedNameList);
+    // get the final value and update it into the local storage.
     localStorage.setItem("pokemonNameList", JSON.stringify(updatedNameList));
   };
-
-  useEffect(() => {
-    // get data from Local Storage:
-    const nameListLocal = localStorage.getItem("pokemonNameList"); // Json format , is string format "{pokemonNameList: ["pikachu","ivy"]}"
-    // console.log("nameListLocal is: ", typeof JSON.parse(nameListLocal));
-    let updatedNameList;
-    if (nameListLocal === null) {
-      updatedNameList = [];
-    } else {
-      updatedNameList = JSON.parse(nameListLocal); // javascript object {pokemonNameList: ["pikachu","ivy"]}
-    }
-    if (updatedNameList.includes(props.name)) {
-      setButtonName("Unlike");
-    } else {
-      setButtonName("Like");
-    }
-  }, [buttonName]);
 
   return (
     <>
