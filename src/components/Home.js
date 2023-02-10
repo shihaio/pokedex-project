@@ -6,7 +6,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import PokemonModal from "./PokemonModal";
-import PokemonPage from "./PokemonPage";
 import Button from "react-bootstrap/Button";
 
 function Home() {

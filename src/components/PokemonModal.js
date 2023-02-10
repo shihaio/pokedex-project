@@ -11,36 +11,58 @@ import Col from "react-bootstrap/Col";
 
 function PokemonModal(props) {
   // console.log(props);
-  const [show, setShow] = useState(false);
-  const [buttonName, setButtonName] = useState(props.buttonName);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false); // this is for modal display
+  const handleClose = () => setShow(false); // this is for modal display
+  const handleShow = () => setShow(true); // this is for modal display
 
-  const handleLike = (event) => {
-    // define the button value
-    if (buttonName === "Like") {
-      setButtonName("Unlike");
-    } else setButtonName("Like");
+  const [buttonName, setButtonName] = useState("Like");
 
+  useEffect(() => {
     // get data from Local Storage:
     const nameListLocal = localStorage.getItem("pokemonNameList"); // Json format , is string format "{pokemonNameList: ["pikachu","ivy"]}"
     // console.log("nameListLocal is: ", typeof JSON.parse(nameListLocal));
-    let updatedNameList;
+    let localStorageArray;
     if (nameListLocal === null) {
-      updatedNameList = [];
+      localStorageArray = [];
     } else {
-      updatedNameList = JSON.parse(nameListLocal); // javascript object {pokemonNameList: ["pikachu","ivy"]}
+      localStorageArray = JSON.parse(nameListLocal); // javascript object {pokemonNameList: ["pikachu","ivy"]}
     }
+
+    if (localStorageArray.includes(props.name)) {
+      setButtonName("Unlike");
+    } else {
+      setButtonName("Like");
+    }
+  }, []);
+
+  const handleLike = (event) => {
+    // get data from Local Storage:
+    const nameListLocal = localStorage.getItem("pokemonNameList"); // Json format , is string format "{pokemonNameList: ["pikachu","ivy"]}"
+    // console.log("nameListLocal is: ", typeof JSON.parse(nameListLocal));
+    let localStorageArray;
+    if (nameListLocal === null) {
+      localStorageArray = [];
+    } else {
+      localStorageArray = JSON.parse(nameListLocal); // javascript object {pokemonNameList: ["pikachu","ivy"]}
+    }
+
+    // define the button value
     if (buttonName === "Like") {
-      updatedNameList.push(props.name);
+      setButtonName("Unlike"); // this is for display only
+    } else setButtonName("Like");
+
+    if (buttonName === "Like") {
+      localStorageArray.push(props.name);
     } else {
-      const imdexOfName = updatedNameList.indexOf(props.name);
-      updatedNameList.splice(imdexOfName, 1);
+      const indexOfName = localStorageArray.indexOf(props.name);
+      localStorageArray.splice(indexOfName, 1);
     }
-    console.log(updatedNameList);
+    console.log(localStorageArray);
     // get the final value and update it into the local storage.
-    localStorage.setItem("pokemonNameList", JSON.stringify(updatedNameList));
+    localStorage.setItem("pokemonNameList", JSON.stringify(localStorageArray));
   };
+
+  // props.name === localStorageArray.includes(props.name) ? "Unlike":"Like”
 
   return (
     <>

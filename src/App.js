@@ -7,7 +7,6 @@ import Home from "./components/Home";
 import NavBarComponent from "./components/NavBarComponent";
 import FavouritePokemonPage from "./components/FavouritePokemonPage";
 import ErrorPage from "./components/ErrorPage";
-import PokemonPage from "./components/PokemonPage";
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
               element={<FavouritePokemonPage />}
             />
 
-            <Route path="pokemon/:pokemonName" element={<PokemonPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
