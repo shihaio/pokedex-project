@@ -28,12 +28,12 @@ function PokemonModal(props) {
       localStorageArray = JSON.parse(nameListLocal); // javascript object {pokemonNameList: ["pikachu","ivy"]}
     }
 
-    if (localStorageArray.includes(props.name)) {
+    if (localStorageArray.includes(props.name)) { // condition to set button name
       setButtonName("Unlike");
     } else {
       setButtonName("Like");
     }
-  }, []);
+  }, [buttonName]);
 
   const handleLike = (event) => {
     // get data from Local Storage:
@@ -48,14 +48,17 @@ function PokemonModal(props) {
 
     // define the button value
     if (buttonName === "Like") {
-      setButtonName("Unlike"); // this is for display only
+      // Toggle of like button
+      setButtonName("Unlike"); // toggle the button function
     } else setButtonName("Like");
 
     if (buttonName === "Like") {
+      // add it into the array
       localStorageArray.push(props.name);
+      // console.log("localStorageArray is :", typeof props.name);
     } else {
-      const indexOfName = localStorageArray.indexOf(props.name);
-      localStorageArray.splice(indexOfName, 1);
+      const indexOfName = localStorageArray.indexOf(props.name); // to find the index of pokemon name } give index!
+      localStorageArray.splice(indexOfName, 1); // remove the value at index from the array.
     }
     console.log(localStorageArray);
     // get the final value and update it into the local storage.
