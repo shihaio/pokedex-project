@@ -12,9 +12,10 @@ This project allows user to browse pokemon in the webpage (which is a pokedex). 
 - Bootstrap with react
 - Ajax (axios) for API
 
-### Wireframes
+### Demo Photos
 
-Not available.
+<img width="1404" alt="image" src="https://github.com/shihaio/pokedex-project/assets/115003963/f4ebb86d-7ffe-4fb3-a93e-520ffdb87c94">
+
 
 ### User Stories
 
